@@ -15,7 +15,7 @@ public class DBConnection {
 
         try {
             String user = "sa";
-            String password = "";
+            String password = "123456";
             String db = "qlchat";
             int port = 1433;
             SQLServerDataSource ds = new SQLServerDataSource();

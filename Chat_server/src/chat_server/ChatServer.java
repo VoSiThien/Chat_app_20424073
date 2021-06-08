@@ -41,10 +41,10 @@ public class ChatServer {
 //            System.exit(0);
 //        }
  
-        Scanner scan = new Scanner(System.in);
-        int p = scan.nextInt();
+        //Scanner scan = new Scanner(System.in);
+        //int p = scan.nextInt();
         //int port = Integer.parseInt(args[0]);
-        int port = p;
+        int port = 8989;
  
         ChatServer server = new ChatServer(port);
         server.execute();//khởi tạo một userThread mới
@@ -57,11 +57,9 @@ public class ChatServer {
         int i = 0;
         for (String name: userNames){
             if(name.equals(n)){
-                System.out.println("co bang");
                 break;
                 
             }
-            System.out.println("vao dau" + name);
             i++;
         }
         int j = 0;

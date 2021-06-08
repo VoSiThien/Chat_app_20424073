@@ -5,17 +5,31 @@
  */
 package GUI;
 
-/**
- *
- * @author Admin
- */
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 public class HomeServer extends javax.swing.JFrame {
 
-    /**
-     * Creates new form HomeServer
-     */
+    private JDialog jdialog1;
+    private JLabel jLTitle;
+    private JLabel jLUsername;
+    private JLabel jLPassword;
+    private JTextField jTUsername;
+    private JPasswordField jtextPass;
+    private JButton JBlogin;
     public HomeServer() {
         initComponents();
+        showlogin();
+        myinit();
     }
 
     /**
@@ -43,9 +57,78 @@ public class HomeServer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    public void myinit(){
+        this.setSize(750, 600);
+        this.setTitle("Menu");
+        this.setLayout(new BorderLayout());
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+    }
+    public void showlogin(){
+        
+        JPanel jpan = new JPanel();
+        jpan.setLayout(null);
+        jpan.setPreferredSize(new Dimension(500, 500));
+        
+        jdialog1 = new JDialog(this, "Login chat app");
+        jdialog1.setSize(500, 500);
+        jdialog1.setLocationRelativeTo(null);
+        jdialog1.setModal(true);
+        jdialog1.setLayout(new FlowLayout());
+        jdialog1.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        jdialog1.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        this.jLTitle = new JLabel("Login chat app");
+        this.jLTitle.setBounds(210, 60, 200, 30);
+        
+        this.jLUsername = new JLabel("Username");
+        this.jLUsername.setBounds(70, 120, 60, 30);
+        this.jTUsername = new JTextField();
+        this.jTUsername.setBounds(140, 120, 250, 30);
+        
+        this.jLPassword = new JLabel("Password");
+        this.jLPassword.setBounds(70, 190, 60, 30);
+        this.jtextPass = new JPasswordField();
+        this.jtextPass.setBounds(140, 190, 250, 30);
+        
+        this.JBlogin = new JButton();
+        this.JBlogin.setText("Login");
+        this.JBlogin.setBounds(180, 330, 140, 40);
+        this.JBlogin.setActionCommand("JBlogin");
+        this.JBlogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginApp();
+            }
+        });
+        
+        jpan.add(this.JBlogin);
+        jpan.add(this.jTUsername);
+        jpan.add(this.jtextPass);
+        jpan.add(this.jLUsername);
+        jpan.add(this.jLPassword);
+        jpan.add(this.jLTitle);
+        
+        jdialog1.add(jpan);
+        jdialog1.setVisible(true);
+    }
+    public void loginApp(){
+        Controller c = new Controller();
+        String username = this.jTUsername.getText();
+        String password = new String(jtextPass.getPassword());
+        int check = c.login(username, password);
+        if(check == 0){
+            JOptionPane.showMessageDialog(this, "login fail, User account or password incorrect!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            this.jdialog1.setModal(true);
+            this.jdialog1.setVisible(false);
+            this.setVisible(true);
+        }
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

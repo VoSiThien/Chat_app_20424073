@@ -5,17 +5,15 @@
  */
 package chat_server;
 
-/**
- *
- * @author Admin
- */
+import GUI.HomeServer;
 public class Chat_server {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        HomeServer m =new HomeServer();
+        m.setVisible(true);
     }
     
 }

@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package chat_client;
+package Process;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import chat_client.ChatClient;
 public class WriteThread extends Thread {
     private PrintWriter writer;
     private Socket socket;
