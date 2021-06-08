@@ -8,6 +8,8 @@ package chat_client;
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
+import Process.ReadThread;
+import Process.WriteThread;
 public class ChatClient {
     private String hostname;
     private int port;
