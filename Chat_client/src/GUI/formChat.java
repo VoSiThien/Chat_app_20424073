@@ -33,7 +33,7 @@ public class formChat extends JFrame{
     JPanel Panel2;
     JPanel Container;
     JButton buttonSend;
-    //----------------------------
+  
     public void setupForm(String UserName) {
         this.setSize(720, 550);
         this.setTitle("you are chat with: " + UserName);
@@ -42,10 +42,10 @@ public class formChat extends JFrame{
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         textAllmessage = new JTextArea(1, 1);
-        JScrollPane areaScrollPane = new JScrollPane(textAllmessage);
+        JScrollPane crollPaneMess = new JScrollPane(textAllmessage);
         
-        areaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        areaScrollPane.setPreferredSize(new Dimension(250, 250));
+        crollPaneMess.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        crollPaneMess.setPreferredSize(new Dimension(250, 250));
         
         textAllmessage.setEditable(false);
         textAllmessage.setLineWrap(true);
@@ -55,10 +55,11 @@ public class formChat extends JFrame{
         Panel1.setPreferredSize(new Dimension(720, 500));
         Panel1.setBackground(Color.yellow);
         Panel1.setLayout(new BorderLayout());
-        Panel1.add(areaScrollPane);
+        Panel1.add(crollPaneMess);
         
         buttonSend = new JButton("Send");
         buttonSend.setBounds(550, 15, 100, 40);
+        
         textMessage = new JTextField();
         textMessage.setBounds(20, 15, 500, 40);
         
@@ -68,7 +69,6 @@ public class formChat extends JFrame{
         Panel2.add(textMessage);
         Panel2.add(buttonSend);
         Panel2.setBackground(Color.darkGray);
-        //------------------Add to Jframe
         
         Container = new JPanel();
         Container.setPreferredSize(this.getSize());
@@ -78,7 +78,7 @@ public class formChat extends JFrame{
         this.add(Container, BorderLayout.CENTER);
         
         
-        buttonSend.setActionCommand("ADDMESSAGE-"+UserName);
+        buttonSend.setActionCommand("SendMessage-"+UserName);
     }
 
     public JTextField getTextMessage() {

@@ -16,13 +16,11 @@ public class ChatServer {
 
     public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-
-            System.out.println("Chat Server is listening on port " + port);
-
+            System.out.println("Server is listen on port: --  " + port);
+            
             while (true) {
                 Socket socket = serverSocket.accept();
-                System.out.println("New user connected");
-                //create a new thread for new user connected
+                System.out.println("New user connected server");
                 UserThread newUser = new UserThread(socket, this);
                 newUser.start();
 
@@ -34,9 +32,6 @@ public class ChatServer {
         }
     }
 
-    /**
-     * Delivers a message from one user to determined others
-     */
     void processMessage(String message, UserThread excludeUser, ArrayList<String> specificUser) {
         for (Map.Entry<String, UserThread> entry : userThreads.entrySet()) {
             String key = entry.getKey();
@@ -54,9 +49,6 @@ public class ChatServer {
         }
     }
 
-    /**
-     * Stores username of the newly connected client.
-     */
     public void addUserName(User user) {
         ListUser.add(user);
     }
@@ -80,14 +72,9 @@ public class ChatServer {
     }
 
     ArrayList<User>getListConnectedUser() {
-        //return this.userNames;
         return this.ListUser;
     }
 
-    /**
-     * Returns true if there are other users connected (not count the currently
-     * connected user)
-     */
     public boolean hasUsers() {
         return !this.ListUser.isEmpty();
     }

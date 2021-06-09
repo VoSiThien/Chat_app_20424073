@@ -30,25 +30,19 @@ public class UserThread extends Thread{
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-            //send new list of connected user to new user
             printUsers(output);
-            //create new user info
             String userName = reader.readLine();
             System.out.println(userName);
             this.userName = userName;
-            User connectedUser = new User(userName, "", "", "online");
+            User connectedUser = new User(userName, "online");
             server.addUserName(connectedUser);
             server.addUserThread(userName, this);
-            //add this new user to list of all user by controller 
             String serverMessage = "NewUser_" + userName;
-            server.processMessage(serverMessage, this, null);
+            server.SendMessage(serverMessage, this, null);
 
-            //recieve client message, if message is "bye" -> end
             String clientMessage;
             do {
-                //recieve the users that client want to send message
                 ArrayList<String> reciever = new ArrayList<String>();
-                //--read number of users
                 int numberOfUser = Integer.parseInt(reader.readLine());
                 for (int i = 0; i < numberOfUser; i++) {
                     String recieverUser = reader.readLine();
@@ -57,19 +51,17 @@ public class UserThread extends Thread{
 
                 clientMessage = reader.readLine();
 
-                if (clientMessage.equals("CLOSE")) {
-                    //do nothing
+                if (clientMessage.equals("Exit")) {
                     
 
                 } else {
                     serverMessage = "[" + userName + "]: " + clientMessage;
-                    server.processMessage(serverMessage, this, reciever);
+                    server.SendMessage(serverMessage, this, reciever);
                 }
-            } while (!clientMessage.equals("CLOSE"));
+            } while (!clientMessage.equals("Exit"));
             server.removeUser(userName, this);
             socket.close();
-            //notify all user that a user is quit/
-            server.processMessage("Quit_" + userName, this, null);
+            server.SendMessage("Quit_" + userName, this, null);
             
         } catch (IOException ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
@@ -77,11 +69,8 @@ public class UserThread extends Thread{
         }
     }
 
-    /**
-     * Sends a list of online users to the newly connected user.
-     */
     public void printUsers(OutputStream output) throws IOException {
-        writer.println("LoadDashBoard");
+        writer.println("LoadHomeClient");
         writer.println(server.getListConnectedUser().size());
         for (int i = 0; i < server.getListConnectedUser().size(); i++) {
             writer.println(server.getListConnectedUser().get(i).getName());
@@ -89,9 +78,6 @@ public class UserThread extends Thread{
         }
     }
 
-    /**
-     * Sends a message to the client.
-     */
     public void sendMessage(String message) {
         writer.println(message);
     }

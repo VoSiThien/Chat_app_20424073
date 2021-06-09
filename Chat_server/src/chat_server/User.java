@@ -12,27 +12,15 @@ package chat_server;
 public class User {
     private static final long serialVersionUID = 6529685098267757690L;
     private String name;
-    private String ip;
-    private String port;
     private String status;
     public User(){}
-    public User(String name, String ip, String port, String status) {
+    public User(String name, String status) {
         this.name = name;
-        this.ip = ip;
-        this.port = port;
         this.status = status;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public String getPort() {
-        return port;
     }
 
     public String getStatus() {

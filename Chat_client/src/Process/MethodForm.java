@@ -7,22 +7,22 @@ package Process;
 
 import GUI.formChat;
 public class MethodForm {
-    private formChat chatView;
-    public MethodForm(formChat chatview){
-        this.chatView = chatview;
+    private formChat formchat;
+    public MethodForm(formChat formchat){
+        this.formchat = formchat;
     }
     public void AddNewMessage() {
-        chatView.gettextAllmessage().append("Me : " + this.GetAddedMessage() + "\n");
-        chatView.gettextAllmessage().setCaretPosition(chatView.gettextAllmessage().getDocument().getLength());
+        formchat.gettextAllmessage().append("Me : " + this.GetAddedMessage() + "\n");
+        formchat.gettextAllmessage().setCaretPosition(formchat.gettextAllmessage().getDocument().getLength());
     }
     public void DisplayRecievedMessage(String message){
-        chatView.gettextAllmessage().append(message);
-        chatView.gettextAllmessage().setCaretPosition(chatView.gettextAllmessage().getDocument().getLength());
+        formchat.gettextAllmessage().append(message);
+        formchat.gettextAllmessage().setCaretPosition(formchat.gettextAllmessage().getDocument().getLength());
     }
     public String GetAddedMessage(){
-        return chatView.getTextMessage().getText();
+        return formchat.getTextMessage().getText();
     }
     public void SetBlankForAddedMessageField(){
-        chatView.getTextMessage().setText("");
+        formchat.getTextMessage().setText("");
     }
 }

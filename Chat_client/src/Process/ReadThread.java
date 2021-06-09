@@ -14,12 +14,12 @@ import chat_client.User;
 import GUI.formChat;
 
 public class ReadThread extends Thread {
-    private BufferedReader reader;
-    private Socket socket;
-    private ChatClient client;
     private Controller controller;
     private InputStream input;
     private String currentUser;
+    private BufferedReader reader;
+    private Socket socket;
+    private ChatClient client;
     ArrayList<User> users;
 
     public ReadThread(Controller _controller, Socket socket, ChatClient client, String _currentUser) {
@@ -41,20 +41,19 @@ public class ReadThread extends Thread {
         while (true) {
             try {
                 String response = reader.readLine();
-                if (response.equals("LoadDashBoard")) {
+                if (response.equals("LoadHomeClient")) {
                     users = new ArrayList<User>();
                     int n = Integer.parseInt(reader.readLine());
 
                     for (int i = 0; i < n; i++) {
                         String Username = reader.readLine();
                         String Status = reader.readLine();
-                        users.add(new User(Username, "", "", Status));
+                        users.add(new User(Username, Status));
                     }
                     controller.showHomeClient(currentUser, users);
                 } else if (response.startsWith("NewUser")) {
-                    //add new user to list of current user
                     String[] message = response.split("\\_");
-                    User newUser = new User(message[1], "", "", "online");
+                    User newUser = new User(message[1], "online");
                     users.add(newUser);
                     controller.reloadTable(users);
                 }
@@ -66,14 +65,12 @@ public class ReadThread extends Thread {
                     }
                     controller.reloadTable(users);
                 }
-                else {//recieve the user who send chat message and store to respond
+                else {
                     if (client.getUserName() != null) {
                         
-                        //recieve user name and specify the chat view
                         String sender = response;
-                        formChat chatView = controller.getListFormChat().get(sender);
-                        MethodForm chatMethod = new MethodForm(chatView);
-                        //recieve message and display
+                        formChat formchat = controller.getListFormChat().get(sender);
+                        MethodForm chatMethod = new MethodForm(formchat);
                         String message = reader.readLine();
                         chatMethod.DisplayRecievedMessage(message + "\n"); 
                     }

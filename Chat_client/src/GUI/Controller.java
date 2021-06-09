@@ -34,7 +34,7 @@ public class Controller implements ActionListener{
         homeclient = new HomeClient(currentUser);
         homeclient.setWriter(socketWriter);
         homeclient.ShowHomeClient(this.CurrentUserName, listUser);
-        homeclient.getDownload().addActionListener(this);
+        homeclient.getButtonStartChat().addActionListener(this);
     }
 
     public void reloadTable(ArrayList<User> listUser) {
@@ -51,12 +51,11 @@ public class Controller implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (ListFormChat.size() != 0 && e.getActionCommand().startsWith("ADDMESSAGE")) {
-            //display message of current user
+        if (ListFormChat.size() != 0 && e.getActionCommand().startsWith("SENDMESSAGE")) {
             String[] SplitCommand = e.getActionCommand().split("\\-");
             String Username = SplitCommand[1];
-            formChat chatView = ListFormChat.get(Username);
-            methodform = new MethodForm(chatView);
+            formChat formchat = ListFormChat.get(Username);
+            methodform = new MethodForm(formchat);
             methodform.AddNewMessage();
             socketWriter.println(1);
 
@@ -66,10 +65,12 @@ public class Controller implements ActionListener{
         }
         if (e.getActionCommand().startsWith("CHATWITH")) {
             String[] SplitCommand = e.getActionCommand().split("\\-");
+            System.out.println("Qua day123" + e.getActionCommand().toString());
             String Username = SplitCommand[1];
-            formChat chatView = new formChat(Username);
-            chatView.getbuttonSend().addActionListener(this);
-            ListFormChat.put(Username, chatView);
+            System.out.println("Qua day" + Username);
+            formChat formchat = new formChat(Username);
+            formchat.getbuttonSend().addActionListener(this);
+            ListFormChat.put(Username, formchat);
 
         }
     }
@@ -90,7 +91,7 @@ public class Controller implements ActionListener{
         this.CurrentUserName = CurrentUserName;
     }
 
-    public void DisplayMessage(String UserName, String message) {
+    public void ViewMessage(String UserName, String message) {
         formChat chatView = ListFormChat.get(UserName);
         MethodForm methodform = new MethodForm(chatView);
         methodform.AddNewMessage();
