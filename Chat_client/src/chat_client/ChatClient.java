@@ -9,56 +9,58 @@ import java.net.*;
 import java.io.*;
 import java.util.Scanner;
 import Process.ReadThread;
-import Process.WriteThread;
+import GUI.Controller;
+import Process.ReadThread;
 public class ChatClient {
     private String hostname;
     private int port;
     private String userName;
- 
-    public ChatClient(String hostname, int port) {
+    private Controller controller;
+    private OutputStream output;
+    private PrintWriter writer;
+    private Socket socket;
+
+    public ChatClient(Controller _controler, String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
+        this.controller = _controler;
+
     }
- 
+
     public void execute() {
         try {
             Socket socket = new Socket(hostname, port);
- 
-            System.out.println("Connected to the chat server");
- 
-            new ReadThread(socket, this).start();
-            new WriteThread(socket, this).start();
- 
+            try {
+                output = socket.getOutputStream();
+                writer = new PrintWriter(output, true);
+                this.controller.setSocketWriter(writer);
+            } catch (IOException ex) {
+                System.out.println("Error getting output stream: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+            //start thread to recieve message from server
+            new ReadThread(controller, socket, this, userName).start();
+            //send username to server after login and add it to Controller
+            String userName = controller.getCurrentUserName();
+            this.setUserName(userName);
+            controller.setCurrentUserName(userName);
+            writer.println(userName);
+            
+            
+
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("I/O Error: " + ex.getMessage());
         }
- 
+
     }
- 
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
- 
+
     public String getUserName() {
         return this.userName;
-    }
- 
- 
-    public static void main(String[] args) {
-        //if (args.length < 2) return;
- 
-        Scanner scan = new Scanner(System.in);
-        
-        
-        //String hostname = args[0];
-        //int port = Integer.parseInt(args[1]);
-        String hostname = scan.nextLine();
-        int p = scan.nextInt();
-        int port = p;
- 
-        ChatClient client = new ChatClient(hostname, port);
-        client.execute();
     }
 }

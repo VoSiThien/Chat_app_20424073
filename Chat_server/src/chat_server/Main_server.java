@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package chat_client;
+package chat_server;
 
-/**
- *
- * @author Admin
- */
-public class Chat_client {
+import GUI.HomeServer;
+public class Main_server {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        int port = 5555;
+        ChatServer server = new ChatServer(port);
+        server.execute();
     }
     
 }
