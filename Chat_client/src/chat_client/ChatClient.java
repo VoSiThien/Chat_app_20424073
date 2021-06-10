@@ -38,13 +38,12 @@ public class ChatClient {
                 System.out.println("Error getting output stream: " + ex.getMessage());
                 ex.printStackTrace();
             }
-            //start thread to recieve message from server
             new ReadThread(controller, socket, this, userName).start();
-            //send username to server after login and add it to Controller
+            // co the xet dk o day
             String userName = controller.getCurrentUserName();
             this.setUserName(userName);
             controller.setCurrentUserName(userName);
-            writer.println(userName);
+            //writer.println(userName);
             
             
 

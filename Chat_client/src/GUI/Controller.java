@@ -27,7 +27,8 @@ public class Controller implements ActionListener{
         flogin = new formLogin();
         CurrentUserName = flogin.getUsername();
         ListFormChat = new HashMap<String, formChat>();
-
+        
+        flogin.getButtonLogin().addActionListener(this);
     }
 
     public void showHomeClient(String currentUser, ArrayList<User> listUser) {
@@ -46,12 +47,19 @@ public class Controller implements ActionListener{
     }
 
     public void addNewFormChat(String UserName) {
-        formChat formchat = new formChat(UserName);
-        ListFormChat.put(UserName, formchat);
+        if(!ListFormChat.containsKey(UserName)){
+            formChat formchat = new formChat(UserName);
+            formchat.getbuttonSend().addActionListener(this);
+            ListFormChat.put(UserName, formchat);
+        }
+        else{
+            formChat formchat = ListFormChat.get(UserName);
+            formchat.setVisible(true);
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (ListFormChat.size() != 0 && e.getActionCommand().startsWith("SENDMESSAGE")) {
+        if (ListFormChat.size() != 0 && e.getActionCommand().startsWith("SendMessage")) {
             String[] SplitCommand = e.getActionCommand().split("\\-");
             String Username = SplitCommand[1];
             formChat formchat = ListFormChat.get(Username);
@@ -60,18 +68,23 @@ public class Controller implements ActionListener{
             socketWriter.println(1);
 
             socketWriter.println(Username);
-            socketWriter.println(methodform.GetAddedMessage());
-            methodform.SetBlankForAddedMessageField();
+            socketWriter.println(methodform.GetMessage());
+            methodform.ClearText();
         }
-        if (e.getActionCommand().startsWith("CHATWITH")) {
+        if (e.getActionCommand().startsWith("OpenChatForm")) {
             String[] SplitCommand = e.getActionCommand().split("\\-");
-            System.out.println("Qua day123" + e.getActionCommand().toString());
             String Username = SplitCommand[1];
-            System.out.println("Qua day" + Username);
             formChat formchat = new formChat(Username);
             formchat.getbuttonSend().addActionListener(this);
             ListFormChat.put(Username, formchat);
+        }
+        if (e.getActionCommand().equals("JButtonlogin")){
+            String Uname = flogin.getUsername();
+            String Pass = flogin.getPassword();
 
+            socketWriter.println("LOGIN");
+            socketWriter.println(Uname);
+            socketWriter.println(Pass);
         }
     }
 
@@ -83,8 +96,12 @@ public class Controller implements ActionListener{
         return CurrentUserName;
     }
 
+    public void Notification(int check){
+        flogin.Notification(check);
+    }
     public void setSocketWriter(PrintWriter socketWriter) {
         this.socketWriter = socketWriter;
+        flogin.setWriter(socketWriter);
     }
 
     public void setCurrentUserName(String CurrentUserName) {

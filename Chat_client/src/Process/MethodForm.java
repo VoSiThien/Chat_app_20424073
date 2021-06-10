@@ -12,17 +12,17 @@ public class MethodForm {
         this.formchat = formchat;
     }
     public void AddNewMessage() {
-        formchat.gettextAllmessage().append("Me : " + this.GetAddedMessage() + "\n");
+        formchat.gettextAllmessage().append("Me : " + this.GetMessage() + "\n");
         formchat.gettextAllmessage().setCaretPosition(formchat.gettextAllmessage().getDocument().getLength());
     }
     public void DisplayRecievedMessage(String message){
         formchat.gettextAllmessage().append(message);
         formchat.gettextAllmessage().setCaretPosition(formchat.gettextAllmessage().getDocument().getLength());
     }
-    public String GetAddedMessage(){
+    public String GetMessage(){
         return formchat.getTextMessage().getText();
     }
-    public void SetBlankForAddedMessageField(){
+    public void ClearText(){
         formchat.getTextMessage().setText("");
     }
 }

@@ -41,7 +41,7 @@ public class process {
         int check = 0;
         try {
             if(rs.next()){
-                check = -1;
+                check = -99;
             }
             else{
                 check = db.Add_Delete_Update(sql, db.con);

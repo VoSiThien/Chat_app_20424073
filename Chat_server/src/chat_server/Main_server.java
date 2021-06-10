@@ -13,7 +13,7 @@ public class Main_server {
      */
     public static void main(String[] args) {
         
-        int port = 5555;
+        int port = 8484;
         ChatServer server = new ChatServer(port);
         server.execute();
     }

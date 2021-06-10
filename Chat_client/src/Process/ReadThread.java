@@ -51,19 +51,34 @@ public class ReadThread extends Thread {
                         users.add(new User(Username, Status));
                     }
                     controller.showHomeClient(currentUser, users);
-                } else if (response.startsWith("NewUser")) {
+                } else if (response.startsWith("NewClient_")) {
                     String[] message = response.split("\\_");
                     User newUser = new User(message[1], "online");
                     users.add(newUser);
                     controller.reloadTable(users);
                 }
-                else if(response.startsWith("Quit")){
+                else if(response.startsWith("CloseNow_")){
                     String[] message = response.split("\\_");
                     users.removeIf(user -> (message[1].equals(user.getName())));
                     for(User c :users){
                         System.out.println(c.getName());
                     }
                     controller.reloadTable(users);
+                }
+                else if(response.equals("FAILED")){// dang nhap sai tk mk
+                    controller.Notification(0);
+                }
+                else if(response.equals("FAILED-CONNECTEDDUPLICATE")){ // tk mk da dang nhap
+                    controller.Notification(1);
+                }
+                else if(response.equals("SUCCESS")){ // Dang nhap thanh cong
+                    controller.Notification(2);
+                }
+                else if(response.equals("REGISTER_failed")){ // Dang ky bi trung
+                    controller.Notification(3);
+                }
+                else if(response.equals("REGISTER_successful")){ // Dang ky thanh cong
+                    controller.Notification(4);
                 }
                 else {
                     if (client.getUserName() != null) {

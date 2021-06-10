@@ -6,12 +6,14 @@
 package GUI;
 
 import java.awt.*;
+import java.io.*;
 import javax.swing.*;
 
 public class formLogin extends JFrame{
     private String username;
+    private PrintWriter writer;
     
-    private JDialog jdialogLogin;
+    //private JDialog jdialogLogin;
     private JLabel jLableTitle;
     private JLabel jLableUsername;
     private JLabel jLablePassword;
@@ -20,22 +22,28 @@ public class formLogin extends JFrame{
     private JButton JButtonlogin;
     
     public formLogin() {
+        Myinit();
+        this.setVisible(true);
+    }
+    private void Myinit(){
+        this.setSize(500, 500);
+        this.setTitle("Login chat app");
+        this.setLocationRelativeTo(null);
+        this.setLayout(new FlowLayout());
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                writer.println("CLOSELOGINVIEW");
+                System.exit(0);
+            }
+        });
+        
         JPanel jpan = new JPanel();
         jpan.setLayout(null);
         jpan.setPreferredSize(new Dimension(500, 500));
         
-        jdialogLogin = new JDialog(this, "Login chat app");
-        jdialogLogin.setSize(500, 500);
-        jdialogLogin.setLocationRelativeTo(null);
-        jdialogLogin.setModal(true);
-        jdialogLogin.setLayout(new FlowLayout());
-        jdialogLogin.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        jdialogLogin.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        
         this.jLableTitle = new JLabel("Login chat app");
         this.jLableTitle.setBounds(210, 60, 200, 30);
         
@@ -52,12 +60,12 @@ public class formLogin extends JFrame{
         this.JButtonlogin = new JButton();
         this.JButtonlogin.setText("Login");
         this.JButtonlogin.setBounds(180, 330, 140, 40);
-        this.JButtonlogin.setActionCommand("JButtonlogin");
-        this.JButtonlogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginApp();
-            }
-        });
+        
+//        this.JButtonlogin.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                loginApp();
+//            }
+//        });
         
         jpan.add(this.JButtonlogin);
         jpan.add(this.jTextUsername);
@@ -66,30 +74,54 @@ public class formLogin extends JFrame{
         jpan.add(this.jLablePassword);
         jpan.add(this.jLableTitle);
         
-        jdialogLogin.add(jpan);
-        jdialogLogin.setVisible(true);
+        this.add(jpan);
+        System.out.println("Da vao day");
+        this.JButtonlogin.setActionCommand("JButtonlogin");
     }
+
+    
+
+//    public void loginApp() {
+//        this.username = this.jTextUsername.getText();
+//        String password = new String(this.jtextPass.getPassword());
+//        
+//        if (username == "" || password == "") {
+//            JOptionPane.showMessageDialog(this, "login fail, User account or password incorrect!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
+//        } else {
+//
+//            JOptionPane.showMessageDialog(null, "Login sucess!");
+//            this.jdialogLogin.setModal(true);
+//            this.jdialogLogin.setVisible(false);
+//
+//        }
+//    }
 
     public JButton getButtonLogin() {
         return JButtonlogin;
     }
-
-    public void loginApp() {
-        this.username = this.jTextUsername.getText();
-        String password = new String(this.jtextPass.getPassword());
-        
-        if (username == "" || password == "") {
-            JOptionPane.showMessageDialog(this, "login fail, User account or password incorrect!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
-        } else {
-
-            JOptionPane.showMessageDialog(null, "Login sucess!");
-            this.jdialogLogin.setModal(true);
-            this.jdialogLogin.setVisible(false);
-
+    public void Notification(int check){
+        if(check == 0){
+            JOptionPane.showMessageDialog(this, "Đăng nhập thất bại, Tài khoản hoặc mật khẩu không đúng!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
+        }else if(check == 1){
+            JOptionPane.showMessageDialog(this, "Tài khoản đang được sử dụng, vui lòng sử dụng tài khoản khác!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
+        }else if(check == 2){
+            JOptionPane.showMessageDialog(null, "Đăng nhập thành công!!!");
+        }else if(check == 3){
+            JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại, vui lòng đăng ký tên tài khoản khác!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
+        }else if(check == 4){
+            JOptionPane.showMessageDialog(null, "Đăng ký thành công, vui lòng đăng nhập");
         }
+        this.setVisible(false);
     }
-
+    public void setWriter(PrintWriter writer) {
+        this.writer = writer;
+    }
     public String getUsername() {
+        this.username = this.jTextUsername.getText();
         return username;
+    }
+    public String getPassword() {
+        String password = new String(this.jtextPass.getPassword());
+        return password;
     }
 }

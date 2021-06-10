@@ -18,9 +18,7 @@ public class Main_client {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 String hostname = "localhost";
-                
-                Scanner sc = new Scanner(System.in);
-                int port = 5555;
+                int port = 8484;
                 Controller controller = new Controller();
                 ChatClient chatclient = new ChatClient(controller, hostname, port);
                 chatclient.execute();

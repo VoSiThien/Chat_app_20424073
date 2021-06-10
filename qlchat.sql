@@ -7,3 +7,6 @@ create table users
 	username varchar(200),
 	password varchar(200)
 )
+insert into users(username, password) 
+values ('user1', '123'),
+		('user2', '123')

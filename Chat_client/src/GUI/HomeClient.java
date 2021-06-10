@@ -31,7 +31,6 @@ public class HomeClient extends JFrame{
     }
     
     private ArrayList<User> ListAllUser;
-    private JMenuItem Download = new JMenuItem("Chat with this user");
     HashMap<String, Integer> tableIndex = new HashMap<String, Integer>();
     private PrintWriter writer;
     private String UserSelect = "";
@@ -134,7 +133,7 @@ public class HomeClient extends JFrame{
         if (this.TableAllUser.getSelectedRows().length != 0) {
             int[] row = this.TableAllUser.getSelectedRows();
             UserSelect = this.TableAllUser.getValueAt(row[0], 0).toString();
-            StartChat.setActionCommand("OPENFORMCHAT-" + UserSelect);
+            StartChat.setActionCommand("OpenChatForm-" + UserSelect);
             System.out.println(UserSelect);
         }
         else{

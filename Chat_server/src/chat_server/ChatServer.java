@@ -27,22 +27,26 @@ public class ChatServer {
             }
 
         } catch (IOException ex) {
-            System.out.println("Error in the server: " + ex.getMessage());
+            System.out.println("Not connect port: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
-    void processMessage(String message, UserThread excludeUser, ArrayList<String> specificUser) {
+    void SendMessage(String message, UserThread userThread, ArrayList<String> ListUser) {
         for (Map.Entry<String, UserThread> entry : userThreads.entrySet()) {
             String key = entry.getKey();
             UserThread value = entry.getValue();
-            if (value != excludeUser) {
-                if (specificUser == null) {
+            if (value != userThread) {
+                if (ListUser == null) {
                     value.sendMessage(message);
+                    System.out.println("vao day gui di:-----------" + message + " == "+ userThread.getUserName());
                 } else {
-                    if (specificUser.contains(value.getUserName())) {
-                        value.sendMessage(excludeUser.getUserName());
+                    System.out.println("Vao day nhe: 1" + ListUser.contains(value.getUserName()) + " == " + userThread.getUserName());
+                    if (ListUser.contains(value.getUserName())) {
+                        System.out.println("Vao day nhe: 2");
+                        value.sendMessage(userThread.getUserName());
                         value.sendMessage(message); 
+                        System.out.println("vao day gui di:-----------" + message + " == "+ userThread.getUserName());
                     }
                 }
             }
