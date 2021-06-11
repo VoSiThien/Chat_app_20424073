@@ -11,6 +11,7 @@ import java.util.Scanner;
 import Process.ReadThread;
 import GUI.Controller;
 import Process.ReadThread;
+import GUI.FormLoginIPvsPort;
 public class ChatClient {
     private String hostname;
     private int port;
@@ -19,11 +20,13 @@ public class ChatClient {
     private OutputStream output;
     private PrintWriter writer;
     private Socket socket;
+    private FormLoginIPvsPort FloginServer = new FormLoginIPvsPort();
 
-    public ChatClient(Controller _controler, String hostname, int port) {
+    public ChatClient(Controller _controler, String hostname, int port, FormLoginIPvsPort floginServer) {
         this.hostname = hostname;
         this.port = port;
         this.controller = _controler;
+        this.FloginServer = floginServer;
 
     }
 
@@ -53,6 +56,23 @@ public class ChatClient {
             System.out.println("I/O Error: " + ex.getMessage());
         }
 
+    }
+    
+    public void Checkexecute() {
+        Socket socket;
+        try {
+            socket = new Socket(hostname, port);
+            
+            socket = null;
+            this.FloginServer.Notification(2);
+        } catch (UnknownHostException ex) {
+            this.FloginServer.Notification(1);
+            System.out.println("Server not found: " + ex.getMessage());
+        } catch (IOException ex) {
+            this.FloginServer.Notification(1);
+            System.out.println("I/O Error: " + ex.getMessage());
+        }
+        
     }
 
     public void setUserName(String userName) {

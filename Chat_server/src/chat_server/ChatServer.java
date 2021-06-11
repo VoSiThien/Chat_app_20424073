@@ -4,8 +4,10 @@ package chat_server;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import GUI.formLogin;
 
 public class ChatServer {
+    private formLogin fLogin;
     private int port;
     private ArrayList<User> ListUser = new ArrayList<User>();
     private HashMap<String, UserThread> userThreads = new HashMap<String, UserThread>();
@@ -16,17 +18,20 @@ public class ChatServer {
 
     public void execute() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            fLogin = new formLogin();
             System.out.println("Server is listen on port: --  " + port);
-            
+            fLogin.Notification(2);
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("New user connected server");
+                System.out.println("vao day: "+ InetAddress.getLocalHost());
                 UserThread newUser = new UserThread(socket, this);
                 newUser.start();
 
             }
 
         } catch (IOException ex) {
+            fLogin.Notification(1);
             System.out.println("Not connect port: " + ex.getMessage());
             ex.printStackTrace();
         }

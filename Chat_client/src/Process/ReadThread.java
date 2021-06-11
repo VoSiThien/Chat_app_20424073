@@ -22,11 +22,11 @@ public class ReadThread extends Thread {
     private ChatClient client;
     ArrayList<User> users;
 
-    public ReadThread(Controller _controller, Socket socket, ChatClient client, String _currentUser) {
+    public ReadThread(Controller Controller, Socket socket, ChatClient client, String CurrentUser) {
         this.socket = socket;
         this.client = client;
-        this.controller = _controller;
-        this.currentUser = _currentUser;
+        this.controller = Controller;
+        this.currentUser = CurrentUser;
         try {
             input = socket.getInputStream();
             reader = new BufferedReader(new InputStreamReader(input));

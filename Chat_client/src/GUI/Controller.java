@@ -6,7 +6,6 @@ import java.util.*;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import com.sun.xml.internal.ws.api.message.saaj.SAAJFactory;
 
 import chat_client.ChatClient;
 import chat_client.User;
@@ -24,14 +23,16 @@ public class Controller implements ActionListener{
 
     private String CurrentUserName = "";
 
-    public Controller() {
-        flogin = new formLogin();
-        CurrentUserName = flogin.getUsername();
-        fRegister = new Register();
-        fRegister.getButtonRegister().addActionListener(this);
-        ListFormChat = new HashMap<String, formChat>();
-        flogin.getJButtonOpenRegister().addActionListener(this);
-        flogin.getButtonLogin().addActionListener(this);
+    public Controller(int check) {
+        if(check != 0){
+            flogin = new formLogin();
+            CurrentUserName = flogin.getUsername();
+            fRegister = new Register();
+            fRegister.getButtonRegister().addActionListener(this);
+            ListFormChat = new HashMap<String, formChat>();
+            flogin.getJButtonOpenRegister().addActionListener(this);
+            flogin.getButtonLogin().addActionListener(this);
+        }
     }
 
     public void showHomeClient(String currentUser, ArrayList<User> listUser) {

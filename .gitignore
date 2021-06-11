@@ -2,3 +2,5 @@
 /Chat_server/build/
 /Chat_client/nbproject/private/
 /Chat_server/nbproject/private/
+/Chat_server/dist/
+/Chat_client/dist/

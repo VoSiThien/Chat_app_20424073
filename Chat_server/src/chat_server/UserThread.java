@@ -29,7 +29,6 @@ public class UserThread extends Thread{
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
-
             String currentAction;
             String username = "", password = "";
             do {

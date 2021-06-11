@@ -6,16 +6,19 @@
 package chat_server;
 
 import GUI.HomeServer;
+import GUI.Controller;
+import GUI.formLogin;
 public class Main_server {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        int port = 8484;
-        ChatServer server = new ChatServer(port);
-        server.execute();
+        formLogin s = new formLogin();
+        s.setVisible(true);
+//        int port = 8484;
+//        ChatServer server = new ChatServer(port);
+//        server.execute();
     }
     
 }
