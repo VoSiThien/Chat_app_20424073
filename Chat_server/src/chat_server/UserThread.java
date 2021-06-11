@@ -30,85 +30,67 @@ public class UserThread extends Thread{
             OutputStream output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
 
-            String type;
+            String currentAction;
             String username = "", password = "";
             do {
-                type = reader.readLine();
-                if(type.equals("CLOSELOGINVIEW")){//login view is closed when user don't want to login
+                currentAction = reader.readLine();
+                if(currentAction.equals("--CloseLoginRegister")){
                     socket.close();
-                    System.out.println("End connection with unknown user");
+                    System.out.println("User cancels login to client");
                     return;
                 }
                 username = reader.readLine();
                 password = reader.readLine();
-                if (type.equals("REGISTER")) {
+                if (currentAction.equals("--Register")) {
                     int KT = processDAO.register(username, password);
                     if (KT == -99) {
-                        sendMessage("REGISTER_failed");
+                        sendMessage("++AccountExist");
                     } else if(KT != 0){
-                        sendMessage("REGISTER_successful");
+                        sendMessage("++RegisterSuccess");
                     }
                 }
-                if (type.equals("LOGIN")) {
-                    System.out.println("USER login");
-                    System.out.println("username:" + username);
-                    System.out.println("password:" + password);
+                if (currentAction.equals("--Login")) {
                     ArrayList<User> list = new ArrayList<User>();
                     int check = processDAO.Login(username, password);
                     if (check == 0) {
-                        this.sendMessage("FAILED");
-                        System.out.println("FAILED");
+                        this.sendMessage("++LoginFail");
                     }
                     if (check != 0) {
-                        boolean isDuplicate = false;
-                        ArrayList<User> connectedUser = server.getListConnectedUser();
-                        for (int i = 0; i < connectedUser.size(); i++) {
-                            if (connectedUser.get(i).getName().equals(username)) {
-                                this.sendMessage("FAILED-CONNECTEDDUPLICATE");
-                                System.out.println("FAILED-CONNECTEDDUPLICATE");
-                                isDuplicate = true;
+                        boolean ACCUsed = false;
+                        ArrayList<User> UserConnect = server.getListUser();
+                        for (int i = 0; i < UserConnect.size(); i++) {
+                            if (UserConnect.get(i).getName().equals(username)) {
+                                this.sendMessage("++AccountUsed");
+                                ACCUsed = true;
                             }
                         }
-                        if (isDuplicate == false) {//login succesfully
-                            //Send list of all user connected to current user
+                        if (ACCUsed == false) {
                             printUsers(output);
-                            //login successfully
-                            this.sendMessage("SUCCESS");
-                            System.out.println("SUCCESS");
+                            this.sendMessage("++LoginSuccess");
                             break;
                         }
 
                     }
                 }
 
-            } while (type.equals("REGISTER") || type.equals("LOGIN"));
-            //chan ngay day
-            //printUsers(output);
+            } while (currentAction.equals("--Register") || currentAction.equals("--Login"));
             userName = username;
-            System.out.println(userName + " --- " + type);
-            User connectedUser = new User(userName, "online");
-            server.addUserName(connectedUser);
+            User UserConnect = new User(userName, "online");
+            server.addUserName(UserConnect);
             server.addUserThread(userName, this);
-            String serverMessage = "NewClient_" + userName;
+            String serverMessage = "NewClientOnline_" + userName;
             server.SendMessage(serverMessage, this, null);
 
             String clientMessage;
             do {
                 ArrayList<String> ListClients = new ArrayList<String>();
                 int numberOfUser = Integer.parseInt(reader.readLine());
-                System.out.println("so: "+ numberOfUser);
                 for (int i = 0; i < numberOfUser; i++) {
                     String OneUser = reader.readLine();
-                    System.out.println("thang usser: "+ OneUser);
                     ListClients.add(OneUser);
                 }
-
                 clientMessage = reader.readLine();
-                System.out.println("tin nhan:  " + clientMessage);
-
-                if (clientMessage.equals("Exit")) {
-                    
-
+                if (clientMessage.equals("Exit")) {   
                 } else {
                     serverMessage = "[" + userName + "]: " + clientMessage;
                     server.SendMessage(serverMessage, this, ListClients);
@@ -126,10 +108,10 @@ public class UserThread extends Thread{
 
     public void printUsers(OutputStream output) throws IOException {
         writer.println("LoadHomeClient");
-        writer.println(server.getListConnectedUser().size());
-        for (int i = 0; i < server.getListConnectedUser().size(); i++) {
-            writer.println(server.getListConnectedUser().get(i).getName());
-            writer.println(server.getListConnectedUser().get(i).getStatus());
+        writer.println(server.getListUser().size());
+        for (int i = 0; i < server.getListUser().size(); i++) {
+            writer.println(server.getListUser().get(i).getName());
+            writer.println(server.getListUser().get(i).getStatus());
         }
     }
 

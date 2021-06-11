@@ -13,13 +13,13 @@ public class formLogin extends JFrame{
     private String username;
     private PrintWriter writer;
     
-    //private JDialog jdialogLogin;
     private JLabel jLableTitle;
     private JLabel jLableUsername;
     private JLabel jLablePassword;
     private JTextField jTextUsername;
     private JPasswordField jtextPass;
     private JButton JButtonlogin;
+    private JButton JButtonOpenRegister;
     
     public formLogin() {
         Myinit();
@@ -31,13 +31,6 @@ public class formLogin extends JFrame{
         this.setLocationRelativeTo(null);
         this.setLayout(new FlowLayout());
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                writer.println("CLOSELOGINVIEW");
-                System.exit(0);
-            }
-        });
         
         JPanel jpan = new JPanel();
         jpan.setLayout(null);
@@ -59,15 +52,16 @@ public class formLogin extends JFrame{
         
         this.JButtonlogin = new JButton();
         this.JButtonlogin.setText("Login");
-        this.JButtonlogin.setBounds(180, 330, 140, 40);
+        this.JButtonlogin.setBounds(180, 280, 140, 40);
         
-//        this.JButtonlogin.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                loginApp();
-//            }
-//        });
+        this.JButtonOpenRegister = new JButton();
+        this.JButtonOpenRegister.setText("Register");
+        this.JButtonOpenRegister.setBounds(180, 330, 140, 40);
+        
+
         
         jpan.add(this.JButtonlogin);
+        jpan.add(this.JButtonOpenRegister);
         jpan.add(this.jTextUsername);
         jpan.add(this.jtextPass);
         jpan.add(this.jLableUsername);
@@ -75,43 +69,41 @@ public class formLogin extends JFrame{
         jpan.add(this.jLableTitle);
         
         this.add(jpan);
-        System.out.println("Da vao day");
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                writer.println("--CloseLoginRegister");
+                System.exit(0);
+            }
+        });
+        this.JButtonOpenRegister.setActionCommand("JButtonOpenRegister");
         this.JButtonlogin.setActionCommand("JButtonlogin");
     }
 
-    
-
-//    public void loginApp() {
-//        this.username = this.jTextUsername.getText();
-//        String password = new String(this.jtextPass.getPassword());
-//        
-//        if (username == "" || password == "") {
-//            JOptionPane.showMessageDialog(this, "login fail, User account or password incorrect!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
-//        } else {
-//
-//            JOptionPane.showMessageDialog(null, "Login sucess!");
-//            this.jdialogLogin.setModal(true);
-//            this.jdialogLogin.setVisible(false);
-//
-//        }
-//    }
 
     public JButton getButtonLogin() {
         return JButtonlogin;
     }
+    
+    public JButton getJButtonOpenRegister() {
+        return JButtonOpenRegister;
+    }
     public void Notification(int check){
+        
         if(check == 0){
             JOptionPane.showMessageDialog(this, "Đăng nhập thất bại, Tài khoản hoặc mật khẩu không đúng!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
         }else if(check == 1){
             JOptionPane.showMessageDialog(this, "Tài khoản đang được sử dụng, vui lòng sử dụng tài khoản khác!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
         }else if(check == 2){
             JOptionPane.showMessageDialog(null, "Đăng nhập thành công!!!");
-        }else if(check == 3){
-            JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại, vui lòng đăng ký tên tài khoản khác!!!", "WARNING", JOptionPane.WARNING_MESSAGE);
-        }else if(check == 4){
-            JOptionPane.showMessageDialog(null, "Đăng ký thành công, vui lòng đăng nhập");
+            this.setVisible(false);
+//            int optionType = JOptionPane.OK_OPTION;
+//            int result = JOptionPane.showConfirmDialog(this, "Đăng nhập thành công!!!", "Success!!", optionType);
+//            if (result == JOptionPane.OK_OPTION) {
+//                this.setVisible(false);
+//            }
         }
-        this.setVisible(false);
+        
     }
     public void setWriter(PrintWriter writer) {
         this.writer = writer;

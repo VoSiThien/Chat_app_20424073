@@ -39,14 +39,10 @@ public class ChatServer {
             if (value != userThread) {
                 if (ListUser == null) {
                     value.sendMessage(message);
-                    System.out.println("vao day gui di:-----------" + message + " == "+ userThread.getUserName());
                 } else {
-                    System.out.println("Vao day nhe: 1" + ListUser.contains(value.getUserName()) + " == " + userThread.getUserName());
                     if (ListUser.contains(value.getUserName())) {
-                        System.out.println("Vao day nhe: 2");
                         value.sendMessage(userThread.getUserName());
                         value.sendMessage(message); 
-                        System.out.println("vao day gui di:-----------" + message + " == "+ userThread.getUserName());
                     }
                 }
             }
@@ -75,7 +71,7 @@ public class ChatServer {
         }
     }
 
-    ArrayList<User>getListConnectedUser() {
+    ArrayList<User>getListUser() {
         return this.ListUser;
     }
 

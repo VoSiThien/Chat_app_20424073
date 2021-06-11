@@ -15,6 +15,7 @@ import Process.MethodForm;
 public class Controller implements ActionListener{
     //private ConnectionForm connectionView;
     private formLogin flogin;
+    private Register fRegister;
     private HomeClient homeclient = null;
     //private RegisterForm registerView;
     private HashMap<String, formChat> ListFormChat;
@@ -26,12 +27,15 @@ public class Controller implements ActionListener{
     public Controller() {
         flogin = new formLogin();
         CurrentUserName = flogin.getUsername();
+        fRegister = new Register();
+        fRegister.getButtonRegister().addActionListener(this);
         ListFormChat = new HashMap<String, formChat>();
-        
+        flogin.getJButtonOpenRegister().addActionListener(this);
         flogin.getButtonLogin().addActionListener(this);
     }
 
     public void showHomeClient(String currentUser, ArrayList<User> listUser) {
+        CurrentUserName = flogin.getUsername();
         homeclient = new HomeClient(currentUser);
         homeclient.setWriter(socketWriter);
         homeclient.ShowHomeClient(this.CurrentUserName, listUser);
@@ -74,17 +78,46 @@ public class Controller implements ActionListener{
         if (e.getActionCommand().startsWith("OpenChatForm")) {
             String[] SplitCommand = e.getActionCommand().split("\\-");
             String Username = SplitCommand[1];
-            formChat formchat = new formChat(Username);
-            formchat.getbuttonSend().addActionListener(this);
-            ListFormChat.put(Username, formchat);
+            if(Username.equals("")){
+                homeclient.CannotSelect();
+            }
+            else{
+                formChat formchat = new formChat(Username);
+                formchat.getbuttonSend().addActionListener(this);
+                ListFormChat.put(Username, formchat);
+            }
         }
         if (e.getActionCommand().equals("JButtonlogin")){
             String Uname = flogin.getUsername();
             String Pass = flogin.getPassword();
 
-            socketWriter.println("LOGIN");
+            socketWriter.println("--Login");
             socketWriter.println(Uname);
             socketWriter.println(Pass);
+        }
+        if (e.getActionCommand().equals("JButtonOpenRegister")) {
+            
+            fRegister.setFormLogin(flogin);
+            fRegister.setVisible(true);
+            flogin.setVisible(false);
+        }
+        if(e.getActionCommand().equals("JButtonRegister")){
+            String Uname = fRegister.getUsername();
+            String Pass = fRegister.getPassword();
+            String ComfirmPass = fRegister.getComfirmPassword();
+            if(Uname.equals("") || Pass.equals("") || ComfirmPass.equals("")){
+                fRegister.Notification(-2);
+            }else{
+                if(ComfirmPass.equals(Pass)){
+
+                    socketWriter.println("--Register");
+                    socketWriter.println(Uname);
+                    socketWriter.println(Pass);
+                }
+                else{
+                    fRegister.Notification(-1);
+                }
+            }
         }
     }
 
@@ -96,8 +129,12 @@ public class Controller implements ActionListener{
         return CurrentUserName;
     }
 
-    public void Notification(int check){
-        flogin.Notification(check);
+    public void Notification(int check, String CAction){
+        if(CAction.equals("login")){
+            flogin.Notification(check);
+        }else{
+            fRegister.Notification(check);
+        }
     }
     public void setSocketWriter(PrintWriter socketWriter) {
         this.socketWriter = socketWriter;

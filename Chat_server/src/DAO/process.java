@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class process {
-    private DBConnection db = new DBConnection();
-    
+    private DBConnection db;
     public int Login(String username, String password){
+        db = new DBConnection();
         db.connect();
         String sql = String.format("select * from users where username = '%s' and password = '%s'", username, password);
         ResultSet rs = db.loadDB(sql, db.con);
@@ -28,16 +28,19 @@ public class process {
             if(rs.next()){
                 check = 1;
             }
+            db.con.close();
         } catch (SQLException ex) {
             Logger.getLogger(process.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         return check;
     }
     public int register(String username, String password){
+        db = new DBConnection();
+        db.connect();
         String sqlkt = String.format("select * from users where username = '%s' and password = '%s'", username, password);
-        String sql = String.format("insert into users values('%s', '%s', %d)",username, password, 1);//0 la admin, 1 la user.
-        ResultSet rs  = db.loadDB(sql, db.con);
+        String sql = String.format("insert into users values('%s', '%s')",username, password);
+        ResultSet rs  = db.loadDB(sqlkt, db.con);
         int check = 0;
         try {
             if(rs.next()){
@@ -46,6 +49,7 @@ public class process {
             else{
                 check = db.Add_Delete_Update(sql, db.con);
             }
+            db.con.close();
         } catch (SQLException ex) {
             Logger.getLogger(process.class.getName()).log(Level.SEVERE, null, ex);
         }

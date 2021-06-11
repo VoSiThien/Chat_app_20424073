@@ -138,6 +138,7 @@ public class HomeClient extends JFrame{
         }
         else{
             UserSelect = "";
+            StartChat.setActionCommand("OpenChatForm-" + UserSelect);
         }
     }
 
@@ -146,6 +147,9 @@ public class HomeClient extends JFrame{
         setupForm();
     }
 
+    public void CannotSelect(){
+        JOptionPane.showMessageDialog(this, "Vui lÒng chon bạn chat, chọn dòng trên danh sách", "WARNING", JOptionPane.WARNING_MESSAGE);
+    }
     public void ShowHomeClient(String UserName, ArrayList<User> ListAllUser) {
         NameOfUser.setText("App chat xin chào: " + UserName);
         this.ListAllUser = ListAllUser;

@@ -51,7 +51,7 @@ public class ReadThread extends Thread {
                         users.add(new User(Username, Status));
                     }
                     controller.showHomeClient(currentUser, users);
-                } else if (response.startsWith("NewClient_")) {
+                } else if (response.startsWith("NewClientOnline_")) {
                     String[] message = response.split("\\_");
                     User newUser = new User(message[1], "online");
                     users.add(newUser);
@@ -60,25 +60,22 @@ public class ReadThread extends Thread {
                 else if(response.startsWith("CloseNow_")){
                     String[] message = response.split("\\_");
                     users.removeIf(user -> (message[1].equals(user.getName())));
-                    for(User c :users){
-                        System.out.println(c.getName());
-                    }
                     controller.reloadTable(users);
                 }
-                else if(response.equals("FAILED")){// dang nhap sai tk mk
-                    controller.Notification(0);
+                else if(response.equals("++LoginFail")){// dang nhap sai tk mk
+                    controller.Notification(0, "login");
                 }
-                else if(response.equals("FAILED-CONNECTEDDUPLICATE")){ // tk mk da dang nhap
-                    controller.Notification(1);
+                else if(response.equals("++AccountUsed")){ // tk mk da dang nhap
+                    controller.Notification(1, "login");
                 }
-                else if(response.equals("SUCCESS")){ // Dang nhap thanh cong
-                    controller.Notification(2);
+                else if(response.equals("++LoginSuccess")){ // Dang nhap thanh cong
+                    controller.Notification(2, "login");
                 }
-                else if(response.equals("REGISTER_failed")){ // Dang ky bi trung
-                    controller.Notification(3);
+                else if(response.equals("++AccountExist")){ // Dang ky bi trung
+                    controller.Notification(3, "Register");
                 }
-                else if(response.equals("REGISTER_successful")){ // Dang ky thanh cong
-                    controller.Notification(4);
+                else if(response.equals("++RegisterSuccess")){ // Dang ky thanh cong
+                    controller.Notification(4, "Register");
                 }
                 else {
                     if (client.getUserName() != null) {
